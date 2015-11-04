@@ -37,6 +37,19 @@ function addCompany(data, cb) {
 
 };
 
+function deleteCompany(query, cb) {
+	MongoClient.connect(url, (err, db) => {
+		if(databaseError(db, err, cb)) return;
+
+		const collection = db.collection("company");
+		collection.remove(query, (derr, res) => {
+			if(databaseError(db, derr, cb)) return;
+
+			returnOK(db, res, cb);
+		})
+	});
+}
+
 /* Helper functions */
 
 /* Takes care of calling the call back function
@@ -60,5 +73,6 @@ function returnOK(db, res, cb) {
 /* Exports */
 module.exports = {
 	getCompanies: getCompanies,
-	addCompany: addCompany
+	addCompany: addCompany,
+	deleteCompany: deleteCompany
 };
